@@ -1,4 +1,4 @@
-package ru.geekbrains.stargame.math;
+package ru.geekbrains.math;
 
 import java.util.Random;
 

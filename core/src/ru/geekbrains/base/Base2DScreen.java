@@ -1,4 +1,4 @@
-package ru.geekbrains.stargame.base;
+package ru.geekbrains.base;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -8,8 +8,8 @@ import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.geekbrains.stargame.math.MatrixUtils;
-import ru.geekbrains.stargame.math.Rect;
+import ru.geekbrains.math.MatrixUtils;
+import ru.geekbrains.math.Rect;
 
 public abstract class Base2DScreen implements Screen, InputProcessor {
 
@@ -50,11 +50,12 @@ public abstract class Base2DScreen implements Screen, InputProcessor {
         screenBounds.setBottom(0);
 
         float aspect = width / (float) height;
-        worldBounds.setHeight(100f);
-        worldBounds.setWidth(100f * aspect);
+        worldBounds.setHeight(1f);
+        worldBounds.setWidth(1f * aspect);
         MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, glBounds);
         batch.setProjectionMatrix(worldToGl);
         MatrixUtils.calcTransitionMatrix(screenToWorld, screenBounds, worldBounds);
+        resize(worldBounds);
     }
 
     public void resize(Rect worldBounds) {
