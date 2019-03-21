@@ -38,13 +38,6 @@ main_ship
   orig: 390, 287
   offset: 0, 0
   index: -1
-main_ship_one
-  rotate: false
-  xy: 916, 95
-  size: 195, 287
-  orig: 195, 287
-  offset: 0, 0
-  index: -1
 message_game_over
   rotate: false
   xy: 8, 8

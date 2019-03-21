@@ -11,25 +11,30 @@ import com.badlogic.gdx.math.Vector2;
 import ru.geekbrains.base.Base2DScreen;
 import ru.geekbrains.math.Rect;
 import ru.geekbrains.sprite.Background;
+import ru.geekbrains.sprite.EnemyShip;
 import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.Star;
 
 public class GameScreen extends Base2DScreen {
 
-    private static final int STAR_COUNT = 256;
+    private static final int STAR_COUNT = 32;
 
     private Background background;
     private Texture backgroundTexture;
     private TextureAtlas atlas;
+
     private Star starList[];
-    private MainShip chip;
+    private MainShip mainShip;
+    private EnemyShip enemyShip;
 
-    Music music = Gdx.audio.newMusic(Gdx.files.internal("music/star.mp3"));
-
+    private Music music;
 
     @Override
     public void show() {
         super.show();
+        music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
+        music.setLooping(true);
+        music.play();
         backgroundTexture = new Texture("textures/bg.png");
         background = new Background(new TextureRegion(backgroundTexture));
         atlas = new TextureAtlas("textures/mainAtlas.tpack");
@@ -37,10 +42,8 @@ public class GameScreen extends Base2DScreen {
         for (int i = 0; i < starList.length; i++) {
             starList[i] = new Star(atlas);
         }
-        chip = new MainShip(atlas);
-
-        music.setLooping(true);
-        music.play();
+        mainShip = new MainShip(atlas);
+        enemyShip = new EnemyShip(atlas);
     }
 
     @Override
@@ -50,7 +53,8 @@ public class GameScreen extends Base2DScreen {
         for (Star star : starList) {
             star.resize(worldBounds);
         }
-        chip.resize(worldBounds);
+        mainShip.resize(worldBounds);
+        enemyShip.resize(worldBounds);
     }
 
     @Override
@@ -64,7 +68,8 @@ public class GameScreen extends Base2DScreen {
         for (Star star : starList) {
             star.update(delta);
         }
-        chip.update(delta);
+        mainShip.update(delta);
+        enemyShip.update(delta);
     }
 
     private void draw() {
@@ -75,7 +80,8 @@ public class GameScreen extends Base2DScreen {
         for (Star star : starList) {
             star.draw(batch);
         }
-        chip.draw(batch);
+        mainShip.draw(batch);
+        enemyShip.draw(batch);
         batch.end();
     }
 
@@ -89,14 +95,25 @@ public class GameScreen extends Base2DScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer) {
-        chip.touchDown(touch, pointer);
+        mainShip.touchDown(touch, pointer);
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer) {
-        chip.touchUp(touch, pointer);
+        mainShip.touchUp(touch, pointer);
         return false;
     }
 
+    @Override
+    public boolean keyDown(int keycode) {
+        mainShip.keyDown(keycode);
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        mainShip.keyUp(keycode);
+        return false;
+    }
 }
