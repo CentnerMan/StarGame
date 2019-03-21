@@ -1,2 +1,0 @@
-# StarGame
-StarGame
