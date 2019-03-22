@@ -17,10 +17,9 @@ public class EnemiesEmitter {
     private static final float[] ENEMY_HEIGHT = {0.1f, 0.15f, 0.2f};
     private static final float[] ENEMY_BULLET_HEIGHT = {0.01f, 0.03f, 0.05f};
     private static final float[] ENEMY_BULLET_VY = {-0.3f, -0.3f, -0.3f};
-    private static final int[] ENEMY_DAMAGE = {1, 2, 3};
+    private static final int[] ENEMY_DAMAGE = {1, 2, 5};
     private static final float[] ENEMY_RELOAD_INTERVAL = {3f, 4f, 5f};
     private static final int[] ENEMY_HP = {1, 5, 10};
-
     private static final String[] TEXTURES = {"enemy0", "enemy1", "enemy2"};
 
     private Rect worldBounds;
@@ -50,24 +49,32 @@ public class EnemiesEmitter {
 
     public void generate(float delta) {
         generateTimer += delta;
-        int shipType = rnd(0, 2);
-        switch (shipType) {
-            case 0: {
-                enemyRegion = enemySmallRegion;
-                break;
-            }
-            case 1: {
-                enemyRegion = enemyMiddleRegion;
-                break;
-            }
-            case 2: {
-                enemyRegion = enemyBigRegion;
-                break;
-            }
-        }
         if (generateTimer >= generateInterval) {
             generateTimer = 0f;
+            int shipType;
             Enemy enemy = enemyPool.obtain();
+
+            int randomHundred = rnd(0, 99); // 0-49 - small, 60-84 - medium, 85-99 - large
+            if (randomHundred < 50) shipType = 0;
+            else if (randomHundred < 85) shipType = 1;
+            else shipType = 2;
+
+            System.out.println(randomHundred + "--------" + shipType);
+
+            switch (shipType) {
+                case 0: {
+                    enemyRegion = enemySmallRegion;
+                    break;
+                }
+                case 1: {
+                    enemyRegion = enemyMiddleRegion;
+                    break;
+                }
+                case 2: {
+                    enemyRegion = enemyBigRegion;
+                    break;
+                }
+            }
             enemy.set(
                     enemyRegion,
                     enemyV[shipType],
