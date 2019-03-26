@@ -1,14 +1,20 @@
 package ru.geekbrains.sprite;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 import ru.geekbrains.base.ScaledButton;
 import ru.geekbrains.math.Rect;
+import ru.geekbrains.screen.GameScreen;
+import ru.geekbrains.screen.MenuScreen;
 
 public class BtnGameOver extends ScaledButton {
 
-    public BtnGameOver(TextureAtlas atlas) {
+    private Game game;
+
+    public BtnGameOver(TextureAtlas atlas, Game game) {
         super(atlas.findRegion("message_game_over"));
+        this.game = game;
         setHeightProportion(0.08f);
     }
 
@@ -19,6 +25,7 @@ public class BtnGameOver extends ScaledButton {
 
     @Override
     protected void action() {
+        game.setScreen(new MenuScreen(game));
 
     }
 

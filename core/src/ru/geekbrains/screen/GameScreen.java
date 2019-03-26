@@ -79,7 +79,7 @@ public class GameScreen extends Base2DScreen {
         mainShip = new MainShip(atlas, bulletPool, explosionPool, laserSound);
         enemiesEmitter = new EnemiesEmitter(atlas, worldBounds, enemyPool);
         buttonReplay = new ButtonReplay(atlas, game);
-        btnGameOver = new BtnGameOver(atlas);
+        btnGameOver = new BtnGameOver(atlas, game);
     }
 
     @Override
@@ -208,6 +208,7 @@ public class GameScreen extends Base2DScreen {
         if (!mainShip.isDestroyed()) {
             mainShip.touchDown(touch, pointer);
         } else {
+            btnGameOver.touchDown(touch, pointer);
             buttonReplay.touchDown(touch, pointer);
         }
         return false;
@@ -218,6 +219,7 @@ public class GameScreen extends Base2DScreen {
         if (!mainShip.isDestroyed()) {
             mainShip.touchUp(touch, pointer);
         } else {
+            btnGameOver.touchUp(touch, pointer);
             buttonReplay.touchUp(touch, pointer);
         }
 
