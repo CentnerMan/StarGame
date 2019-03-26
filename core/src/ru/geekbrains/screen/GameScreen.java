@@ -1,5 +1,6 @@
 package ru.geekbrains.screen;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -17,7 +18,9 @@ import ru.geekbrains.pool.BulletPool;
 import ru.geekbrains.pool.EnemyPool;
 import ru.geekbrains.pool.ExplosionPool;
 import ru.geekbrains.sprite.Background;
+import ru.geekbrains.sprite.BtnGameOver;
 import ru.geekbrains.sprite.Bullet;
+import ru.geekbrains.sprite.ButtonReplay;
 import ru.geekbrains.sprite.Enemy;
 import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.Star;
@@ -27,9 +30,14 @@ public class GameScreen extends Base2DScreen {
 
     private static final int STAR_COUNT = 64;
 
+    private Game game;
+
     private Background background;
     private Texture backgroundTexture;
     private TextureAtlas atlas;
+    private BtnGameOver btnGameOver;
+    private ButtonReplay buttonReplay;
+
 
     private Star starList[];
     private MainShip mainShip;
@@ -44,6 +52,10 @@ public class GameScreen extends Base2DScreen {
     private Sound laserSound;
     private Sound bulletSound;
     private Sound explosionSound;
+
+    public GameScreen(Game game) {
+        this.game = game;
+    }
 
     @Override
     public void show() {
@@ -66,12 +78,16 @@ public class GameScreen extends Base2DScreen {
         enemyPool = new EnemyPool(bulletPool, explosionPool, worldBounds, bulletSound);
         mainShip = new MainShip(atlas, bulletPool, explosionPool, laserSound);
         enemiesEmitter = new EnemiesEmitter(atlas, worldBounds, enemyPool);
+        buttonReplay = new ButtonReplay(atlas, game);
+        btnGameOver = new BtnGameOver(atlas);
     }
 
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);
         background.resize(worldBounds);
+        btnGameOver.resize(worldBounds);
+        buttonReplay.resize(worldBounds);
         for (Star star : starList) {
             star.resize(worldBounds);
         }
@@ -165,6 +181,10 @@ public class GameScreen extends Base2DScreen {
             mainShip.draw(batch);
             enemyPool.drawActiveSprites(batch);
             bulletPool.drawActiveSprites(batch);
+        } else {
+            btnGameOver.draw(batch);
+            buttonReplay.draw(batch);
+
         }
         batch.end();
     }
@@ -187,6 +207,8 @@ public class GameScreen extends Base2DScreen {
     public boolean touchDown(Vector2 touch, int pointer) {
         if (!mainShip.isDestroyed()) {
             mainShip.touchDown(touch, pointer);
+        } else {
+            buttonReplay.touchDown(touch, pointer);
         }
         return false;
     }
@@ -195,7 +217,10 @@ public class GameScreen extends Base2DScreen {
     public boolean touchUp(Vector2 touch, int pointer) {
         if (!mainShip.isDestroyed()) {
             mainShip.touchUp(touch, pointer);
+        } else {
+            buttonReplay.touchUp(touch, pointer);
         }
+
         return false;
     }
 
