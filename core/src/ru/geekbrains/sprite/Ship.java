@@ -11,6 +11,7 @@ import ru.geekbrains.pool.ExplosionPool;
 
 public class Ship extends Sprite {
 
+
     protected Rect worldBounds;
 
     protected Vector2 v = new Vector2();
@@ -82,4 +83,12 @@ public class Ship extends Sprite {
         return hp;
     }
 
+//    public String getStringHp() {
+//
+//        return hp;
+//    }
+
+    public Vector2 getV() {
+        return v;
+    }
 }
