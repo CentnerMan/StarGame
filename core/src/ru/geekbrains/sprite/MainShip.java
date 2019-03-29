@@ -162,4 +162,8 @@ public class MainShip extends Ship {
     private void stop() {
         v.setZero();
     }
+
+    public int getMaxHP(){
+        return HP;
+    }
 }

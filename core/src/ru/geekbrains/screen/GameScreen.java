@@ -22,6 +22,7 @@ import ru.geekbrains.sprite.Background;
 import ru.geekbrains.sprite.Bullet;
 import ru.geekbrains.sprite.ButtonNewGame;
 import ru.geekbrains.sprite.Enemy;
+import ru.geekbrains.sprite.Life;
 import ru.geekbrains.sprite.MainShip;
 import ru.geekbrains.sprite.MessageGameOver;
 import ru.geekbrains.sprite.Star;
@@ -30,7 +31,7 @@ import ru.geekbrains.utils.EnemiesEmitter;
 
 public class GameScreen extends Base2DScreen {
 
-    private static final int STAR_COUNT = 64;
+    private static final int STAR_COUNT = 32;
     private static final float FONT_SIZE = 0.02f;
     private static final String FRAGS = "Frags: ";
     private static final String HP = "HP: ";
@@ -41,6 +42,8 @@ public class GameScreen extends Base2DScreen {
     private Background background;
     private Texture backgroundTexture;
     private TextureAtlas atlas;
+    private Life life;
+    private Texture lifeTexture;
 
     private TrackingStar starList[];
     private MainShip mainShip;
@@ -80,6 +83,8 @@ public class GameScreen extends Base2DScreen {
         explosionSound = Gdx.audio.newSound(Gdx.files.internal("sounds/explosion.wav"));
         backgroundTexture = new Texture("textures/bg.png");
         background = new Background(new TextureRegion(backgroundTexture));
+        lifeTexture = new Texture("textures/life.png");
+        life = new Life(new TextureRegion(lifeTexture));
         atlas = new TextureAtlas("textures/mainAtlas.tpack");
         starList = new TrackingStar[STAR_COUNT];
         bulletPool = new BulletPool();
@@ -122,6 +127,7 @@ public class GameScreen extends Base2DScreen {
         }
         if (state == State.PLAYING) {
             mainShip.resize(worldBounds);
+            life.resize(worldBounds);
         }
     }
 
@@ -229,15 +235,18 @@ public class GameScreen extends Base2DScreen {
         sbFrags.setLength(0);
         sbHp.setLength(0);
         sbLevel.setLength(0);
+        life.setCurrHP((float) mainShip.getHp() / (float) mainShip.getMaxHP());
+        life.draw(batch);
         font.draw(batch, sbFrags.append(FRAGS).append(frags), worldBounds.getLeft() + 0.01f, worldBounds.getTop() - 0.01f);
-//        font.draw(batch, sbHp.append(HP).append(mainShip.getHp()), worldBounds.pos.x, worldBounds.getTop() - 0.01f, Align.center);
-        font.draw(batch, sbHp.append(HP).append("||||||||||"), worldBounds.pos.x, worldBounds.getTop() - 0.01f, Align.center);
+        font.draw(batch, sbHp.append(HP).append(mainShip.getHp()), worldBounds.pos.x, worldBounds.getTop() - 0.01f, Align.center);
         font.draw(batch, sbLevel.append(LEVEL).append(enemiesEmitter.getLevel()), worldBounds.getRight() - 0.01f, worldBounds.getTop() - 0.01f, Align.right);
+
     }
 
     @Override
     public void dispose() {
         backgroundTexture.dispose();
+        lifeTexture.dispose();
         atlas.dispose();
         music.dispose();
         laserSound.dispose();

@@ -83,11 +83,6 @@ public class Ship extends Sprite {
         return hp;
     }
 
-//    public String getStringHp() {
-//
-//        return hp;
-//    }
-
     public Vector2 getV() {
         return v;
     }
