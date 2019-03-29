@@ -42,12 +42,9 @@ public class EnemiesEmitter {
     public EnemiesEmitter(TextureAtlas atlas, Rect worldBounds, EnemyPool enemyPool) {
         this.worldBounds = worldBounds;
         this.enemyPool = enemyPool;
-        TextureRegion textureRegion0 = atlas.findRegion("enemy0");
-        this.enemySmallRegion = Regions.split(textureRegion0, 1, 2, 2);
-        TextureRegion textureRegion1 = atlas.findRegion("enemy1");
-        this.enemyMediumRegion = Regions.split(textureRegion1, 1, 2, 2);
-        TextureRegion textureRegion2 = atlas.findRegion("enemy2");
-        this.enemyBigRegion = Regions.split(textureRegion2, 1, 2, 2);
+        this.enemySmallRegion = Regions.split(atlas.findRegion(TEXTURES[0]), 1, 2, 2);
+        this.enemyMediumRegion = Regions.split(atlas.findRegion(TEXTURES[1]), 1, 2, 2);
+        this.enemyBigRegion = Regions.split(atlas.findRegion(TEXTURES[2]), 1, 2, 2);
         this.bulletRegion = atlas.findRegion("bulletEnemy");
     }
 
@@ -58,8 +55,8 @@ public class EnemiesEmitter {
             generateTimer = 0f;
             int shipType;
             Enemy enemy = enemyPool.obtain();
-
-            int randomHundred = rnd(0, 99); // 0-49 - small, 60-84 - medium, 85-99 - large
+            // 0-49 - small, 60-84 - medium, 85-99 - large
+            int randomHundred = rnd(0, 99);
             if (randomHundred < 50) shipType = 0;
             else if (randomHundred < 85) shipType = 1;
             else shipType = 2;
